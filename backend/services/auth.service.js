@@ -50,3 +50,8 @@ export const createUserService = async (email, password, full_name) => {
     role: "user"
   };
 };
+
+export const loguinUserService = async (email, password)=>{
+  const {data, error} = await supabase.auth.signInWithPassword({ email, password });
+  return {data, error};
+}
