@@ -2,7 +2,7 @@
 // 2. obtener id
 // 3. buscar role_id
 // 4. insertar perfil
-
+import supabase from "../db/supabase.js";
 import { createUserService, loguinUserService } from "../services/auth.service.js";
 
 export const register = async (req, res) => {
@@ -70,6 +70,37 @@ export const getProfile = async (req, res) => {
       ok: false,
       error: error.message
     });
+  }
+};
+
+
+export const getMe = async (req, res) => {
+  try {
+    const userId = req.user.id;
+
+    const { data, error } = await supabase
+      .from("users")
+      .select(`
+        id,
+        full_name,
+        roles ( name )
+      `)
+      .eq("id", userId)
+      .single();
+
+    if (error) {
+      return res.status(404).json({ error: "Perfil no encontrado" });
+    }
+
+    res.json({
+      id: userId,
+      email: req.user.email,
+      full_name: data.full_name,
+      role: data.roles.name
+    });
+
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
 };
 
