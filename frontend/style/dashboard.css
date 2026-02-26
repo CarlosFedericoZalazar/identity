@@ -3,8 +3,10 @@
 }
 
 .container {
-  width: 900px;
-  align-self: center;
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 20px;
 }
 
 .header {
@@ -62,4 +64,30 @@
   background: rgba(255,255,255,0.05);
   margin-bottom: 8px;
   border-radius: 6px;
+}
+
+@media (max-width: 768px) {
+
+  #title-header {
+    margin-left: 0;
+    text-align: center;
+    width: 100%;
+    font-size: 40px;
+  }
+
+  .header {
+    flex-direction: column;
+    align-items: stretch;
+    text-align: center;
+  }
+
+  .card {
+    padding: 18px;
+  }
+
+  .users-list div {
+    font-size: 0.9rem;
+    word-break: break-word;
+  }
+
 }

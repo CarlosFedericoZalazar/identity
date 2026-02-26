@@ -1,3 +1,5 @@
+const API_URL = "https://identity-backend-wheat.vercel.app"
+
 const title = document.getElementById("title-header");
 const btnLogout = document.getElementById("logoutBtn");
 
@@ -9,7 +11,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     return;
   }
 
-  const res = await fetch("http://localhost:3000/api/auth/me", {
+  const res = await fetch(`${API_URL}/api/auth/me`, {
     headers: {
       Authorization: `Bearer ${token}`
     }
@@ -28,7 +30,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     title.textContent = "ADMINISTRADOR"
 
     document.getElementById("loadUsersBtn").addEventListener("click", async () => {
-      const usersRes = await fetch("http://localhost:3000/api/admin/users", {
+      const usersRes = await fetch(`${API_URL}/api/admin/users`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
