@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./style/layout.css">
+    <link rel="stylesheet" href="./style/dashboard.css">
+    <title>Document</title>
+</head>
+
+<body>
+    <header class="header">
+        <h1 id="title-header">USUARIO</h1>
+        <button id="logoutBtn" class="btn logout">Cerrar sesión</button>
+    </header>
+    
+    <div class="container">
+        <div class="card" id="profileSection">
+            <h2>Perfil</h2>
+            <p><strong>Nombre:</strong> <span id="name"></span></p>
+            <p><strong>Email:</strong> <span id="email"></span></p>
+            <p><strong>Rol:</strong> <span id="role" class="badge"></span></p>
+        </div>
+
+        <div class="card" id="adminSection" style="display:none;">
+            <h2>Panel Administrador</h2>
+            <button id="loadUsersBtn" class="btn">Listar usuarios</button>
+            <div id="usersList" class="users-list"></div>
+        </div>
+    </div>
+    <script type="module" src="dashboard.js"></script>
+</body>
+
+</html>

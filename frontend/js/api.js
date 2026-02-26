@@ -17,27 +17,8 @@ export const login = async (email, password) => {
 
     localStorage.setItem("token", data.session.access_token);
 
-    // 👇 ahora pedimos el perfil
-    const me = await getMe();
-    console.log("Perfil:", me);
+    window.location.href = "dashboard.html";
+    
   }
 };
 
-export const getMe = async () => {
-  const token = localStorage.getItem("token");
-
-  if (!token) {
-    console.log("No hay token");
-    return;
-  }
-
-  const res = await fetch("http://localhost:3000/api/auth/me", {
-    method: "GET",
-    headers: {
-      "Authorization": `Bearer ${token}`
-    }
-  });
-
-  const data = await res.json();
-  return data;
-};

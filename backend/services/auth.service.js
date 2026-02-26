@@ -1,8 +1,7 @@
 import supabase from "../db/supabase.js";
 
-export const createUserService = async (email, password, full_name) => {
-
-  // 1️⃣ Crear usuario en Supabase Auth
+export const createUserService = async (email, password, full_name, profile) => {
+  // Crear usuario en Auth
   const { data: authData, error: authError } =
     await supabase.auth.admin.createUser({
       email,
@@ -16,39 +15,48 @@ export const createUserService = async (email, password, full_name) => {
 
   const userId = authData.user.id;
 
-  // 2️⃣ Buscar el rol "user"
-  const { data: roleData, error: roleError } =
-    await supabase
-      .from("roles")
-      .select("id")
-      .eq("name", "user")
-      .single();
+  try {
+    // buscamos el id del rol recibido como parametro profile
+    const { data: roleData, error: roleError } =
+      await supabase
+        .from("roles")
+        .select("id")
+        .eq("name", profile)
+        .single();
 
-  if (roleError) {
-    throw new Error("No se pudo obtener el rol");
+    if (roleError || !roleData) {
+      throw new Error("No se pudo obtener el rol");
+    }
+
+    // creamos perfil
+    const { error: profileError } =
+      await supabase
+        .from("users")
+        .insert({
+          id: userId,
+          full_name,
+          role_id: roleData.id
+        });
+
+    if (profileError) {
+      throw new Error("No se pudo crear el perfil");
+    }
+
+    // retornamos el usuario
+    return {
+      id: userId,
+      email,
+      full_name,
+      role: profile
+    };
+
+  } catch (error) {
+
+    // borramos usuario recien creado ante el error
+    await supabase.auth.admin.deleteUser(userId);
+
+    throw error;
   }
-
-  // 3️⃣ Crear perfil
-  const { error: profileError } =
-    await supabase
-      .from("users")
-      .insert({
-        id: userId,
-        full_name,
-        role_id: roleData.id
-      });
-
-  if (profileError) {
-    throw new Error("No se pudo crear el perfil");
-  }
-
-  // 4️⃣ Devolver usuario limpio
-  return {
-    id: userId,
-    email,
-    full_name,
-    role: "user"
-  };
 };
 
 export const loguinUserService = async (email, password)=>{

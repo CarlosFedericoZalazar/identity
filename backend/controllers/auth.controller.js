@@ -1,15 +1,11 @@
-// 1. crear usuario en auth
-// 2. obtener id
-// 3. buscar role_id
-// 4. insertar perfil
 import supabase from "../db/supabase.js";
 import { createUserService, loguinUserService } from "../services/auth.service.js";
 
 export const register = async (req, res) => {
-  const { email, password, full_name } = req.body;
+  const { email, password, full_name, profile } = req.body;
 
   try {
-    const user = await createUserService(email, password, full_name);
+    const user = await createUserService(email, password, full_name, profile);
 
     res.status(201).json({
       ok: true,
@@ -25,7 +21,7 @@ export const register = async (req, res) => {
 };
 
 export const login = async (req, res) => {
-  const { email, password } = req.body;
+  const { email, password} = req.body;
 
   try {
     const { data, error } = await loguinUserService(email, password);
@@ -53,7 +49,6 @@ export const login = async (req, res) => {
 
 export const getProfile = async (req, res) => {
   try {
-    // Viene del token
     const user = req.user;
 
     return res.status(200).json({
@@ -87,7 +82,7 @@ export const getMe = async (req, res) => {
       `)
       .eq("id", userId)
       .single();
-
+    console.log(`DATOS DEL GET ME: `+ data.roles.name)
     if (error) {
       return res.status(404).json({ error: "Perfil no encontrado" });
     }

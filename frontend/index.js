@@ -1,11 +1,12 @@
-import {login} from "./js/api.js"
+import { login } from "./js/api.js";
 
-const btnInput = document.getElementById("button-button")
+const form = document.getElementById("login-form");
 
-btnInput.addEventListener("click", async (e) => {
+form.addEventListener("submit", async (e) => {
+  e.preventDefault(); // 🔥 evita que recargue la página
 
-  const email = document.getElementById("input-email").value;
-  const password = document.getElementById("input-password").value;
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
 
-  login(email,password);
+  await login(email, password);
 });

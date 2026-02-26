@@ -2,6 +2,7 @@ import express from 'express';
 import cors from "cors";
 import "dotenv/config";
 import authRoutes from './routes/auth.route.js';
+import adminRoutes from "./routes/admin.route.js";
 
 const app = express();
 
@@ -12,6 +13,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
 app.use('/api/auth', authRoutes);
+
+app.use("/api/admin", adminRoutes);
 
 app.listen("3000",()=>{
     console.log("Escuchando en puerto 3000");
