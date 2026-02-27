@@ -17,13 +17,39 @@ Firebase Auth, Auth0, Clerk o Cognito, donde:
 Frontend
    │  email + password
    ▼
-Backend (Express)
+Backend (Express API)
    │
    ▼
 Supabase
- ├─ auth.users   → login, passwords, tokens
- └─ public.users → perfil, rol, permisos
+ ├─ auth.users   → credenciales, tokens, seguridad
+ └─ public.users → perfil, roles, permisos
 ```
+
+## 🖼️ Insertar imagen (/imgs/login.png)
+
+- Markdown (README en GitHub o docs):
+```markdown
+<img src="imgs/login.png" alt="Login" width="320" />
+```
+
+- HTML (frontend):
+```html
+<!-- ruta absoluta desde la raíz pública del servidor -->
+<img src="/imgs/login.png" alt="Pantalla de login" width="320" />
+
+<!-- ruta relativa según estructura de archivos -->
+<img src="imgs/login.png" alt="Pantalla de login" />
+```
+
+- Nota sobre servir archivos estáticos (Express):
+```js
+// coloca /imgs dentro de tu carpeta pública (ej. /public/imgs/login.png)
+app.use(express.static(path.join(__dirname, 'public')))
+```
+
+- Consejos:
+1. En producción, asegura que la carpeta que contiene imgs esté expuesta por el servidor (public).
+2. Para README en GitHub usa rutas relativas si la imagen está en el repo (ej. imgs/login.png).
 ## 🧍‍♂️ Modelo de usuarios
 1️⃣ - auth.users (Supabase)
 
@@ -46,6 +72,8 @@ Está vinculada con auth.users por el mismo UUID:
 ```
 auth.users.id === public.users.id
 ```
+
+
 
 ## 🧩 Flujo de registro
 1️⃣ El cliente envía:
@@ -157,11 +185,14 @@ SUPABASE_SERVICE_ROLE_KEY=eyJhbGciOiJIUzI1NiIs...
 identity/
  ├── backend/
  │   ├── controllers/
+ │   ├── middleware/
  │   ├── services/
  │   ├── db/
  │   └── app.js
+ │
  └── frontend/
      ├── index.html
+     ├── dashboard.html
      ├── css/
      └── js/
 ```
@@ -172,12 +203,4 @@ identity/
 - PostgreSQL
 - JavaScript (Frontend)
 
-## 🚧 Estado del proyecto
-## Checklist de estado
 
-- [X] Arquitectura definida — Diagrama y responsabilidades claras
-- [X] Registro de usuarios — Endpoint, validaciones y creación en auth + perfil
-- [X] Login — Endpoint, gestión de tokens (access/refresh) y errores
-- [X] Middleware de JWT — Verificación de token, expiración y extracción del header
-- [ ] Middleware de roles — Comprobación de role/permiso por ruta
-- [ ] Frontend — Formularios de registro/login y manejo de sesión/cookies
