@@ -4,14 +4,19 @@ export const getUsers = async (req, res) => {
   try {
     console.log("ROL DEL QUE CONSULTA:", req.userRole);
 
-    const { data, error } = await supabase
+    let query = supabase
       .from("users")
       .select(`
-        id,
-        full_name,
-        roles ( name )
-      `);
+    id,
+    full_name,
+    roles ( name )
+  `);
 
+    if (req.userRole === "admin") {
+      query = query.eq("roles.name", "user");
+    }
+
+    const { data, error } = await query;
     if (error) {
       return res.status(500).json({ error: error.message });
     }
@@ -20,9 +25,9 @@ export const getUsers = async (req, res) => {
       id: user.id,
       full_name: user.full_name,
       role: user.roles.name
-    })).filter(user =>user.role === "user");
-    
-    res.json(formattedU);
+    }));
+
+    res.json(formattedUsers);
 
   } catch (error) {
     res.status(500).json({ error: error.message });
