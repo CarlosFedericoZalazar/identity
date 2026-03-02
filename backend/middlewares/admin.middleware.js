@@ -19,7 +19,7 @@ export const adminMiddleware = async (req, res, next) => {
     if (data.roles.name !== "admin") {
       return res.status(403).json({ error: "Solo administradores" });
     }
-
+    req.userRole = roleName;
     next();
   } catch (error) {
     res.status(500).json({ error: error.message });

@@ -29,7 +29,8 @@ Supabase
 
 - Markdown (README en GitHub o docs):
 ```markdown
-<img src="imgs/login.png" alt="Login" width="320" />
+![Login](/identity/imgs/login.png)        # ruta absoluta desde la raíz del sitio
+![Login](imgs)         # ruta relativa (usa ./imgs/... según ubicación del archivo)
 ```
 
 - HTML (frontend):

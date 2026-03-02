@@ -25,3 +25,30 @@ export const authMiddleware = async (req, res, next) => {
   }
 };
 
+export const isActiveMiddleware = async (req, res, next) => {
+  try {
+    const userId = req.user.id; // ← ya viene del authMiddleware
+
+    const { data, error } = await supabase
+      .from("users")
+      .select("active")
+      .eq("id", userId)
+      .single();
+
+    if (error) {
+      return res.status(500).json({ error: "DB error" });
+    }
+
+    if (!data?.active) {
+      return res.status(403).json({
+        error: "account_disabled",
+        message: "Tu cuenta está desactivada."
+      });
+    }
+
+    next();
+
+  } catch (error) {
+    return res.status(500).json({ error: "Server error" });
+  }
+};

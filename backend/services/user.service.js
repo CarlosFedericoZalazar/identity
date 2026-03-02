@@ -15,3 +15,11 @@ export const getUserProfile = async (userId) => {
     role: data.roles.name
   };
 };
+
+export const userActiveService = async (userId) => {
+  return await supabase
+    .from("users")
+    .select("active")
+    .eq("id", userId)
+    .single();
+};

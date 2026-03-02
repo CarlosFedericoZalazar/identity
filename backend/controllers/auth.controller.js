@@ -32,7 +32,7 @@ export const login = async (req, res) => {
         message: "Credenciales inválidas"
       });
     }
-
+    console.log(data.user);
     return res.status(200).json({
       ok: true,
       session: data.session,

@@ -2,6 +2,8 @@ import supabase from "../db/supabase.js";
 
 export const getUsers = async (req, res) => {
   try {
+    console.log("ROL DEL QUE CONSULTA:", req.userRole);
+
     const { data, error } = await supabase
       .from("users")
       .select(`
@@ -18,9 +20,9 @@ export const getUsers = async (req, res) => {
       id: user.id,
       full_name: user.full_name,
       role: user.roles.name
-    }));
-
-    res.json(formattedUsers);
+    })).filter(user =>user.role === "user");
+    
+    res.json(formattedU);
 
   } catch (error) {
     res.status(500).json({ error: error.message });

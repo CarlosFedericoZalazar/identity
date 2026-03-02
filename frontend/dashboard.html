@@ -14,7 +14,7 @@
         <h1 id="title-header">USUARIO</h1>
         <button id="logoutBtn" class="btn logout">Cerrar sesión</button>
     </header>
-    
+
     <div class="container">
         <div class="card" id="profileSection">
             <h2>Perfil</h2>
@@ -26,7 +26,28 @@
         <div class="card" id="adminSection" style="display:none;">
             <h2>Panel Administrador</h2>
             <button id="loadUsersBtn" class="btn">Listar usuarios</button>
+            <button id="newUsersBtn" class="btn">Crear Usuario</button>
             <div id="usersList" class="users-list"></div>
+            <div id="newUserSection" style="display: none;">
+                <form id="newUserForm">
+                    <div>
+                        <label for="fullName">Nombre:</label>
+                        <input type="text" id="fullName" name="full_name" required>
+                    </div>
+
+                    <div>
+                        <label for="emailUser">Email:</label>
+                        <input type="email" id="emailUser" name="email" required>
+                    </div>
+
+                    <div>
+                        <label for="passwordUser">Password:</label>
+                        <input type="password" id="passwordUser" name="password" required>
+                    </div>
+
+                    <button type="submit" class="btn">Crear Usuario</button>
+                </form>
+            </div>
         </div>
     </div>
     <script type="module" src="dashboard.js"></script>
