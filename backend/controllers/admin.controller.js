@@ -12,9 +12,13 @@ export const getUsers = async (req, res) => {
     roles ( name )
   `);
 
-    if (req.userRole === "admin") {
-      query = query.eq("roles.name", "user");
-    }
+    // if (req.userRole === "admin") {
+    //   query = query.eq("roles.name", "user");
+    // }
+    // if (error) {
+    //   console.log("ERROR SUPABASE:", error);
+    //   return res.status(500).json({ error: error.message });
+    // }
 
     const { data, error } = await query;
     if (error) {

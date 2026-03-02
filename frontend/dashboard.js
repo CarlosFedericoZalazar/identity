@@ -51,7 +51,7 @@ document.getElementById("loadUsersBtn").addEventListener("click", async () => {
   });
   const section = document.getElementById("newUserSection");
   section.style.display = "none";
-
+  console.log("STATUS:", usersRes.status);
   if (!usersRes.ok) {
     alert("No autorizado");
     return;
