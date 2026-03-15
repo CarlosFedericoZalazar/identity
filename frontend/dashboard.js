@@ -1,4 +1,4 @@
-import { createUser, getUsers, resetPassword, updateUser } from "./js/api.js"
+import { createUser, getUsers, resetPassword, updateUser, getProfile, deleteUserbySuperAdmin } from "./js/api.js"
 
 
 // const API_URL = "https://identity-backend-wheat.vercel.app"
@@ -31,15 +31,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     return;
   }
 
-  const res = await fetch(`${API_URL}/api/auth/me`, {
-    headers: {
-      Authorization: `Bearer ${token}`
-    }
-  });
+  const data = await getProfile(token);
 
-  data = await res.json();
-
-  if (!res.ok) {
+  if (!data.ok) {
 
     if (data.error === "account_disabled") {
 
@@ -222,16 +216,37 @@ DOM.formNewUser.addEventListener("submit", async (e) => {
 async function loadListUsers() {
   resetUI();
   const users = await getUsers(token);
+  const currentRole = loggedUser.role;
   const list = document.getElementById("usersList");
 
   users.forEach(user => {
     const div = document.createElement("div");
     div.classList.add("user-item");
-    const btnUpdateUser = document.createElement("button");
 
-    btnUpdateUser.id = "btnInListUpdate";
-    btnUpdateUser.classList.add("btn");
+    const divButtons = document.createElement("div");
+    divButtons.classList.add("container-buttonsList");
+
+
+    const btnUpdateUser = document.createElement("button");
+    const btnDeleteUser = document.createElement("button");
+
+    // btnUpdateUser.id = "btnInListUpdate";
+    btnUpdateUser.classList.add("btn", "btnInListUpdate");
     btnUpdateUser.textContent = "update";
+
+    if(currentRole === 'super_admin'){
+      btnDeleteUser.id = "btnInListDelete";
+      btnDeleteUser.classList.add("btn", "btnInListUpdate");
+      btnDeleteUser.textContent = "delete";
+      
+      btnDeleteUser.addEventListener("click", async() => {
+        const result = await deleteUserbySuperAdmin(token, user.id);
+        console.log(result.estado);
+        resetUI();
+      });
+    }
+
+    console.log(currentRole);
 
     btnUpdateUser.addEventListener("click", () => {
       openEditForm(user);
@@ -240,7 +255,10 @@ async function loadListUsers() {
     const state = user.state ? `🟢 ACTIVO` : `🔴 INACTIVO`;
     div.className = "user-item";
     div.textContent = `${user.full_name} — ${user.role} - ${state}`;
-    div.appendChild(btnUpdateUser);
+    
+    divButtons.appendChild(btnUpdateUser);
+    if(currentRole==='super_admin') divButtons.appendChild(btnDeleteUser);
+    div.appendChild(divButtons);
     list.appendChild(div);
   });
 }

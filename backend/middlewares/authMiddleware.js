@@ -18,8 +18,7 @@ export const authMiddleware = async (req, res, next) => {
     
     // SOLO identidad
     req.user = data.user;
-    console.log(`authMiddleware: req.user -> ${req.user.profile}`);
-    console.log(data);
+    console.log("auth middleware");
 
     next();
   } catch (error) {

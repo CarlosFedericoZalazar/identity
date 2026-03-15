@@ -110,11 +110,15 @@
   padding: 6px;
 }
 
-#btnInListUpdate{
+.btnInListUpdate{
     padding: 6px 10px;
     font-size: 0.8rem;
+    margin: 0 1px;
 }
 
+#btnInListDelete:hover{
+  background: var(--userInactive);
+}
 
 
 @media (max-width: 768px) {

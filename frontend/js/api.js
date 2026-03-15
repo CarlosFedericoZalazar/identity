@@ -93,3 +93,66 @@ export const updateUser = async (token, id, name, role, state) =>{
   console.log(data.estado);
   return data;
 };
+
+export const getProfile = async (token) => {
+  try {
+
+    const res = await fetch(`${API_URL}/api/auth/me`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
+      }
+    });
+
+    const data = await res.json();
+
+    // Si el backend respondió error HTTP
+    if (!res.ok) {
+      return {
+        ok: false,
+        error: data.error || "auth_error",
+        message: data.message || "Error de autenticación"
+      };
+    }
+
+    // respuesta correcta
+    return {
+      ok: true,
+      ...data
+    };
+
+  } catch (error) {
+
+    return {
+      ok: false,
+      error: "network_error",
+      message: "No se pudo conectar con el servidor"
+    };
+
+  }
+};
+
+export const deleteUserbySuperAdmin = async (token, id) => {
+  try {
+    const res = await fetch(`${API_URL}/api/super-admin/delete-user/${id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
+      }
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      throw new Error(data.error || data.message || "Error deleting user");
+    }
+
+    console.log(data.estado);
+    return data;
+  } catch (error) {
+    console.error(error);
+    return { ok: false, error: "network_error", message: error.message || "Error de red" };
+  }
+};

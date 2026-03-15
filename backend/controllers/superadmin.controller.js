@@ -1,6 +1,7 @@
 import { deleteUserService } from "../services/auth.service.js";
 
 export const deleteUser = async (req,res) => {
+    console.log("DELETE USER")
     try{
         const idUser = req.params.id;
         const result = await deleteUserService(idUser);
