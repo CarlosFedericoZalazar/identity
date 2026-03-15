@@ -25,32 +25,6 @@ Supabase
  └─ public.users → perfil, roles, permisos
 ```
 
-## 🖼️ Insertar imagen (/imgs/login.png)
-
-- Markdown (README en GitHub o docs):
-```markdown
-![Login](/identity/imgs/login.png)        # ruta absoluta desde la raíz del sitio
-![Login](imgs)         # ruta relativa (usa ./imgs/... según ubicación del archivo)
-```
-
-- HTML (frontend):
-```html
-<!-- ruta absoluta desde la raíz pública del servidor -->
-<img src="/imgs/login.png" alt="Pantalla de login" width="320" />
-
-<!-- ruta relativa según estructura de archivos -->
-<img src="imgs/login.png" alt="Pantalla de login" />
-```
-
-- Nota sobre servir archivos estáticos (Express):
-```js
-// coloca /imgs dentro de tu carpeta pública (ej. /public/imgs/login.png)
-app.use(express.static(path.join(__dirname, 'public')))
-```
-
-- Consejos:
-1. En producción, asegura que la carpeta que contiene imgs esté expuesta por el servidor (public).
-2. Para README en GitHub usa rutas relativas si la imagen está en el repo (ej. imgs/login.png).
 ## 🧍‍♂️ Modelo de usuarios
 1️⃣ - auth.users (Supabase)
 
@@ -65,8 +39,9 @@ No se modifica manualmente.
 
 2️⃣ public.users (Aplicación) Tabla personalizada que contiene:
 - id (UUID, FK a auth.users.id)
-- username (string)
+- full_name (string)
 - role (string: 'admin', 'user')
+- active (boolean)
 - otros datos del perfil
 
 Está vinculada con auth.users por el mismo UUID:
@@ -75,11 +50,10 @@ auth.users.id === public.users.id
 ```
 
 
-
 ## 🧩 Flujo de registro
 1️⃣ El cliente envía:
 ```
-{ "email", "password", "username" }
+{ "email", "password", "full_name", "role" }
 ```
 2️⃣ El backend ejecuta:
 ```
@@ -113,21 +87,39 @@ supabase.auth.signInWithPassword()
 - Valida la contraseña (hash)
 - Devuelve JWT (access + refresh)
 - Devuelve el perfil del usuario (id, email).
-
-4️⃣ El backend recibe:
+#### ⚠️ Importante: Supabase no devuelve el rol ni el perfil extendido.
+4️⃣ El backend responde al frontend con la sesión:
 ```
 {
-  "access_token": "...",
-  "refresh_token": "...",
+  "session": {
+    "access_token": "...",
+    "refresh_token": "..."
+  },
   "user": {
-    "id": "...",
-    "email": "...",
-    "username": "...",
-    "role": "admin"
+    "id": "uuid",
+    "email": "user@email.com"
   }
 }
 ```
-El access_token se usa para autenticar futuras solicitudes, y el refresh_token para obtener nuevos tokens cuando el access_token expire.
+El frontend:
+- Guarda el ```access_token``` en ```localStorage```.
+- Redirecciona al ```dashboard```. 
+
+## 🔐 Flujo de Autorización posterior
+Una vez logueado, el frontend hace:
+```http
+GET /api/auth/me
+Authorization: Bearer <access_token>
+```
+
+4️⃣ El backend valida el token con Supabase:
+```javascript
+supabase.auth.getUser(token)
+```
+Si es válido:
+- Se obtiene la identidad ```(req.user)```
+- Se continúa con la request.
+
 
 5️⃣ El backend busca el perfil del usuario:
 ```sql
@@ -135,6 +127,7 @@ SELECT username, role
 FROM public.users
 WHERE id = user.id
 ```
+
 6️⃣ El backend responde al frontend:
 ```json
 {
@@ -148,9 +141,10 @@ WHERE id = user.id
   }
 }
 ```
-El `access_token` se usa para autenticar futuras solicitudes.
+El access_token solo certifica identidad.
 
-El `refresh_token` se usa para obtener nuevos tokens cuando el access_token expira.
+El rol y permisos se determinan en cada request consultando la base de datos.
+
 ## 🗄️ Estructura de Base de Datos (Supabase)
 Tabla: ```roles```
 ```sql

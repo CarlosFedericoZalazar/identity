@@ -49,29 +49,73 @@
 }
 
 .badge {
-  padding: 5px 10px;
+  padding: 2px 5px;
   border-radius: 6px;
   background: #10b981;
-  font-size: 0.8rem;
+  font-size: 1.2rem;
 }
 
+#profileSection p{
+  margin-bottom: 0.8rem;
+}
 .users-list {
   margin-top: 15px;
 }
 
-.users-list div {
+.user-item {
   padding: 10px;
   background: rgba(255,255,255,0.05);
   margin-bottom: 8px;
   border-radius: 6px;
 }
 
-#newUserForm{
+.user-item{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.userForm{
+  text-align: center;
   background: rgba(255,255,255,0.05);
   border-radius: 6px;
   max-width: 300px;
   padding: 1rem;
 }
+
+#newUserForm div{
+  margin-bottom: 1rem;
+  display: flex;
+  justify-content: space-between;
+}
+
+#editTitle{
+  margin-bottom: 20px;
+}
+
+#editUserForm div{
+  margin-bottom: 1rem ;
+  display: flex;
+}
+
+.item-edit{
+  margin-left: 0.5rem;
+}
+
+.div-editButton{
+    display:flex;
+    justify-content:center;
+}
+#div-btnEdit button{
+  padding: 6px;
+}
+
+#btnInListUpdate{
+    padding: 6px 10px;
+    font-size: 0.8rem;
+}
+
+
 
 @media (max-width: 768px) {
 

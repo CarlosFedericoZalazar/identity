@@ -1,8 +1,8 @@
 import supabase from "../db/supabase.js";
 
-export const adminMiddleware = async (req, res, next) => {
-  try {
-    console.log("ENTRA adminMiddleware");
+export const superAdminMiddleware = async (token) => {
+    try {
+    console.log("ENTRA Super AdminMiddleware");
     const userId = req.user.id;
 
     const { data, error } = await supabase
@@ -14,12 +14,12 @@ export const adminMiddleware = async (req, res, next) => {
       .single();
 
     if (error || !data) {
-      return res.status(403).json({ error: "Acceso denegado" });
+      return res.status(403).json({ error: "Acceso denegado, Solo Super Administradores" });
     }
 
     const roleName = data.roles.name;
     
-    if (data.roles.name !== "admin" && data.roles.name !== "super_admin") {
+    if (data.roles.name !== "super_admin") {
       return res.status(403).json({ error: "Solo administradores" });
     }
     console.log("DATA COMPLETA:", data);

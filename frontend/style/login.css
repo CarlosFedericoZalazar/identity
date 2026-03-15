@@ -73,6 +73,7 @@ main {
 }
 
 @media (max-width: 480px) {
+
     header h1{
         font-size: 35px;
         text-align: center;
@@ -82,4 +83,10 @@ main {
         justify-content: start;
         margin-top: 50px;
     }
+
+    #login-form {
+        max-width: 360px;
+        padding: 2.5rem;
+    }
+
 }

@@ -15,6 +15,8 @@
     --text: #f8fafc;
     --text-muted: #cbd5e1;
     --autocomplete: rgb(153, 226, 233);
+    --userActive: rgb(37, 218, 37);
+    --userInactive: rgb(229, 36, 36);
 }
 
 body {

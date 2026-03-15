@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./style/layout.css">
     <link rel="stylesheet" href="./style/dashboard.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
     <title>Document</title>
 </head>
 
@@ -28,7 +29,7 @@
             <button id="loadUsersBtn" class="btn">Listar usuarios</button>
             <button id="newUsersBtn" class="btn">Crear Usuario</button>
             <div id="usersList" class="users-list"></div>
-            <div id="newUserSection" style="display: none;">
+            <div id="newUserSection" class="userForm" style="display: none;">
                 <form id="newUserForm">
                     <div>
                         <label for="fullName">Nombre:</label>
@@ -45,11 +46,48 @@
                         <input type="password" id="passwordUser" name="password" required>
                     </div>
 
-                    <button type="submit" class="btn">Crear Usuario</button>
+                    <button id="btnNewUser" type="submit" class="btn">Crear Usuario</button>
+                </form>
+            </div>
+
+            <div id="editUserSection" class="userForm" style="display:none;">
+                <h3 id="editTitle">Editar Usuario</h3>
+
+                <form id="editUserForm">
+                    <div>
+                        <label for="editFullName">Nombre:</label>
+                        <input type="text" id="editFullName" class='item-edit' name="full_name" required>
+                    </div>
+
+                    <div>
+                        <label for="editState">Estado:</label>
+                        <button id="editState" class='item-edit' type="button">ACTIVO</button>
+                    </div>
+
+                    <!-- Solo visible para superadmin -->
+                    <div id="roleField" style="display:none;">
+                        <label for="editRole">Rol:</label>
+                        <select id="editRole" name="role">
+                            <option value="user">User</option>
+                            <option value="admin">Admin</option>
+                        </select>
+                    </div>
+
+                    <div class="div-editButton">
+                        <button type="button" id="resetPasswordBtn" class="btn">
+                            Resetear contraseña
+                        </button>
+                    </div>
+                    <div class="div-editButton">
+                        <button id="btnEdit-save" type="submit" class="btn">Guardar</button>
+                        <button id="btnEdit-cancel" type="submit" class="btn">Cancelar</button>
+                    </div>
+
                 </form>
             </div>
         </div>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
     <script type="module" src="dashboard.js"></script>
 </body>
 

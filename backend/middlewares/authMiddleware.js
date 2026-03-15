@@ -7,17 +7,19 @@ export const authMiddleware = async (req, res, next) => {
     if (!authHeader) {
       return res.status(401).json({ error: "No token" });
     }
-
+    
     const token = authHeader.split(" ")[1];
-
+    
     const { data, error } = await supabase.auth.getUser(token);
-
+    
     if (error || !data.user) {
       return res.status(401).json({ error: "Token inválido" });
     }
-
+    
     // SOLO identidad
     req.user = data.user;
+    console.log(`authMiddleware: req.user -> ${req.user.profile}`);
+    console.log(data);
 
     next();
   } catch (error) {
@@ -27,6 +29,7 @@ export const authMiddleware = async (req, res, next) => {
 
 export const isActiveMiddleware = async (req, res, next) => {
   try {
+    console.log("ENTRA isActiveMiddleware");
     const userId = req.user.id; // ← ya viene del authMiddleware
 
     const { data, error } = await supabase

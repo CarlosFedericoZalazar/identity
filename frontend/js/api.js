@@ -1,4 +1,5 @@
-const API_URL = "https://identity-backend-wheat.vercel.app"
+// const API_URL = "https://identity-backend-wheat.vercel.app"
+const API_URL = "http://localhost:3000";
 
 export const login = async (email, password) => {
   const res = await fetch(`${API_URL}/api/auth/login`, {
@@ -23,3 +24,72 @@ export const login = async (email, password) => {
   }
 };
 
+export const createUser = async (email, password, full_name, profile) => {
+
+  const token = localStorage.getItem("token");
+
+  const res = await fetch(`${API_URL}/api/admin/create-user`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${token}`
+    },
+    body: JSON.stringify({ email, password, full_name, profile })
+  });
+
+  const data = await res.json();
+
+  if (!res.ok) {
+    throw new Error(data.error || "Error creando usuario");
+  }
+
+  return data;
+};
+
+export const getUsers = async(token)=>{
+
+  const usersRes = await fetch(`${API_URL}/api/admin/users`, {
+    headers: { Authorization: `Bearer ${token}` }
+  });
+
+  if (!usersRes.ok) {
+    alert("No autorizado");
+    return;
+  }
+
+  const users = await usersRes.json();
+  return users;
+};
+
+export const resetPassword = async (token, id)=>{
+  
+  const res = await fetch(`${API_URL}/api/admin/reset-password/${id}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${token}`
+    },
+  });
+  const data = await res.json();
+  console.log(data.estado);
+  return data;
+};
+
+export const updateUser = async (token, id, name, role, state) =>{
+
+  const res = await fetch(`${API_URL}/api/admin/users/${id}`, {
+    method:"PATCH",
+    headers:{
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${token}`
+    },
+    body: JSON.stringify({ 
+      name,
+      role,
+      state
+     })
+  })
+  const data = await res.json();
+  console.log(data.estado);
+  return data;
+};

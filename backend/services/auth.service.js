@@ -62,4 +62,61 @@ export const createUserService = async (email, password, full_name, profile) => 
 export const loguinUserService = async (email, password)=>{
   const {data, error} = await supabase.auth.signInWithPassword({ email, password });
   return {data, error};
-}
+};
+
+export const resetPasswordUserService = async (userId, tempPassword) =>{
+  await supabase.auth.admin.updateUserById(userId, {
+  password: tempPassword
+});
+};
+
+export const updateUserService = async (id, full_name, role, state) => {
+  if (!id) throw new Error("Se requiere id de usuario");
+
+  const updates = {};
+  if (typeof full_name !== "undefined") updates.full_name = full_name;
+  updates.active = state;
+
+  if (typeof role !== "undefined") {
+    const { data: roleData, error: roleError } = await supabase
+      .from("roles")
+      .select("id")
+      .eq("name", role)
+      .single();
+
+    if (roleError || !roleData) {
+      throw new Error("No se pudo obtener el rol");
+    }
+    updates.role_id = roleData.id;
+  }
+  if (Object.keys(updates).length) {
+    const { error: profileError } = await supabase
+      .from("users")
+      .update(updates)
+      .eq("id", id);
+
+    if (profileError) {
+      throw new Error("No se pudo actualizar el perfil");
+    }
+  }
+  return {
+    id,
+    full_name: updates.full_name ?? null,
+    role: typeof role !== "undefined" ? role : null,
+    state: typeof state !== "undefined" ? state : null
+  };
+};
+
+export const deleteUserService = async (id) => {
+
+    const { error: authError } = await supabase.auth.admin.deleteUser(id);
+
+    if (authError) {
+    throw new Error("No se pudo eliminar el usuario de auth");
+    }
+    
+    return {
+      id,
+      deleted: true
+    };
+};
