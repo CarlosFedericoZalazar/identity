@@ -46,6 +46,14 @@
                         <input type="password" id="passwordUser" name="password" required>
                     </div>
 
+                    <div id="newRoleField" style="display:none;">
+                        <label for="roleUser">Rol:</label>
+                        <select id="roleUser" name="role">
+                            <option value="user">User</option>
+                            <option value="admin">Admin</option>
+                        </select>
+                    </div>
+
                     <button id="btnNewUser" type="submit" class="btn">Crear Usuario</button>
                 </form>
             </div>
@@ -80,7 +88,7 @@
                     </div>
                     <div class="div-editButton">
                         <button id="btnEdit-save" type="submit" class="btn">Guardar</button>
-                        <button id="btnEdit-cancel" type="submit" class="btn">Cancelar</button>
+                        <button id="btnEdit-cancel" type="button" class="btn">Cancelar</button>
                     </div>
 
                 </form>

@@ -88,7 +88,10 @@ document.addEventListener("DOMContentLoaded", async () => {
   document.getElementById("email").textContent = data.email;
   document.getElementById("role").textContent = data.role;
   
-  console.log(data);
+  if (loggedUser.role === "super_admin") {
+  document.getElementById("newRoleField").style.display = "block";
+}
+
 });
 
 function resetUI() {
@@ -139,12 +142,12 @@ function openEditForm(user) {
   };
 
   btnCancel.onclick = async (e) => {
-    e.preventDefault();
     await loadListUsers();
   };
 
   // Mostrar rol solo si es superadmin
   if (currentRole === "super_admin") {
+    console.log("soy el rol mostra el list man");
     document.getElementById("roleField").style.display = "block";
     document.getElementById("editRole").value = user.role;
   } else {
@@ -153,7 +156,6 @@ function openEditForm(user) {
 
   btnSave.onclick = async (e) => {
     e.preventDefault();
-
 
     const textName = document.getElementById("editFullName");
     user.full_name = textName.value;
@@ -187,21 +189,24 @@ DOM.btnNewUser.addEventListener("click", () => {
 
   DOM.btnNewUser.textContent = "CANCELAR";
   DOM.btnNewUser.style.backgroundColor = "#f92525";
+  
 });
 
 DOM.formNewUser.addEventListener("submit", async (e) => {
   e.preventDefault();
-
+  console.log("estoy en el formnewuser");
   DOM.btnNewUser.disabled = true;
   DOM.btnNewUser.textContent = "Creando...";
 
   const name = document.getElementById("fullName").value;
   const email = document.getElementById("emailUser").value;
   const password = document.getElementById("passwordUser").value;
-  // const profile = document.getElementById("roleUser").value; 
+  const role = loggedUser.role === "super_admin"
+    ? document.getElementById("roleUser").value
+    : "user";
 
   try {
-    const result = await createUser(email, password, name, "user");
+    const result = await createUser(email, password, name, role);
 
     console.log("Usuario creado:", result);
 
@@ -245,8 +250,6 @@ async function loadListUsers() {
         resetUI();
       });
     }
-
-    console.log(currentRole);
 
     btnUpdateUser.addEventListener("click", () => {
       openEditForm(user);
