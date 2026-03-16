@@ -6,6 +6,42 @@ Este proyecto implementa una arquitectura real de identidad, separando:
 - Autenticación (email, password, JWT) → Supabase
 - Autorización y perfiles (roles, permisos, datos) → Base de datos propia.
 
+## 🚀 Demo
+Puedes probar el sistema con las siguientes credenciales:
+- **Email:** adminadmin@test.com
+- **Password:** admin
+
+El super administrador puede:
+- Crear administradores/usuarios
+- Asignar o cambiar roles
+- Eliminar usuarios definitivamente
+
+Administrador:
+- Puede crear usuarios
+- modificar nombre de usuario
+- reiniciar contraseña de usuarios
+- Desactivar usuarios (soft delete)
+- No puede eliminar usuarios definitivamente
+
+Usuario:
+- Solo puede ver su perfil
+
+ ⚠️Este proyecto es una demostración de arquitectura de autenticación y roles, no un sistema de producción.
+
+ ## 🖥️ Interface
+ #### LOGIN
+ <img src="./imgs/panel_login.png" alt="login" width="400"/>
+
+#### DASHBOARD ADMIN
+ <img src="./imgs/panel_dashboard.png" alt="dashboard" width="400"/>
+
+#### DASHBOARD USUARIO
+ <img src="./imgs/panel_usuario.png" alt="panel_usuario" width="400"/>
+
+#### ESTRUCTURA SUPABASE
+ <img src="./imgs/supabase.png" alt="supabase" width="400"/>
+
+
 ## 🎯 Objetivo
 Construir un sistema de usuarios profesional, similar al usado por:
 Firebase Auth, Auth0, Clerk o Cognito, donde:
@@ -49,6 +85,20 @@ Está vinculada con auth.users por el mismo UUID:
 auth.users.id === public.users.id
 ```
 
+## 👥 Roles del sistema
+| Rol        | Permisos                   |
+| ---------- | -------------------------- |
+| User       | Acceso a su perfil         |
+| Admin      | Crear y gestionar usuarios |
+| SuperAdmin | Control total del sistema  |
+
+Jerarquía
+```
+SuperAdmin
+   │
+   ├─ Admin
+   │   └─ User
+```
 
 ## 🧩 Flujo de registro
 1️⃣ El cliente envía:
@@ -199,3 +249,8 @@ identity/
 - JavaScript (Frontend)
 
 
+## 🚀 Futuras mejoras
+- Storage imagenes de perfil
+- Mejorar UI/UX
+- Agregar logs de actividad
+- usuario editar su perfil

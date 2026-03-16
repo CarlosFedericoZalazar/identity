@@ -1,5 +1,5 @@
 import { createUser, getUsers, resetPassword, updateUser, getProfile, deleteUserbySuperAdmin } from "./js/api.js"
-
+import {alertNotyf} from "./components/alert.js";
 
 // const API_URL = "https://identity-backend-wheat.vercel.app"
 const API_URL = "http://localhost:3000";
@@ -32,38 +32,40 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   const data = await getProfile(token);
+  
+  const notyf = alertNotyf();
 
   if (!data.ok) {
 
     if (data.error === "account_disabled") {
 
-      const notyf = new Notyf({
-        position: {
-          x: "center",
-          y: "top"
-        },
-        types: [
-          {
-            type: "success",
-            background: "#22c55e",
-            duration: 3000
-          },
-          {
-            type: "error",
-            background: "#ef4444",
-            duration: 5000
-          }
-        ]
-      });
+      // const notyf = new Notyf({
+      //   position: {
+      //     x: "center",
+      //     y: "top"
+      //   },
+      //   types: [
+      //     {
+      //       type: "success",
+      //       background: "#22c55e",
+      //       duration: 3000
+      //     },
+      //     {
+      //       type: "error",
+      //       background: "#ef4444",
+      //       duration: 5000
+      //     }
+      //   ]
+      // });
 
-      notyf.error(data.message);
-
+      
       localStorage.removeItem("token");
-
+      
       setTimeout(() => {
         window.location.href = "index.html";
-      }, 1500);
-
+      }, 5000);
+      
+      notyf.error(data.message);
       return;
     }
 
@@ -75,6 +77,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   loggedUser = data;
 
   console.log("Usuario válido:", data);
+  notyf.success(data.message);
 
   // Solo admin ve sección admin
   if (data.role === "admin" || data.role === "super_admin") {

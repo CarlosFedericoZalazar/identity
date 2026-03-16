@@ -91,7 +91,8 @@ export const getMe = async (req, res) => {
       id: userId,
       email: req.user.email,
       full_name: data.full_name,
-      role: data.roles.name
+      role: data.roles.name,
+      message: `Bienvenido ${data.full_name}`
     });
 
   } catch (error) {
