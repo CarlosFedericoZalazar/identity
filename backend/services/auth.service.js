@@ -1,7 +1,6 @@
 import supabase from "../db/supabase.js";
 
 export const createUserService = async (email, password, full_name, profile) => {
-  // Crear usuario en Auth
   const { data: authData, error: authError } =
     await supabase.auth.admin.createUser({
       email,
@@ -16,7 +15,6 @@ export const createUserService = async (email, password, full_name, profile) => 
   const userId = authData.user.id;
 
   try {
-    // buscamos el id del rol recibido como parametro profile
     const { data: roleData, error: roleError } =
       await supabase
         .from("roles")
@@ -28,7 +26,7 @@ export const createUserService = async (email, password, full_name, profile) => 
       throw new Error("No se pudo obtener el rol");
     }
 
-    // creamos perfil
+    // creao el perfil
     const { error: profileError } =
       await supabase
         .from("users")
@@ -42,7 +40,7 @@ export const createUserService = async (email, password, full_name, profile) => 
       throw new Error("No se pudo crear el perfil");
     }
 
-    // retornamos el usuario
+    // retorno el usuario creado
     return {
       id: userId,
       email,
@@ -52,7 +50,7 @@ export const createUserService = async (email, password, full_name, profile) => 
 
   } catch (error) {
 
-    // borramos usuario recien creado ante el error
+    // ante un error borro el usuario creado en el proceso fallido
     await supabase.auth.admin.deleteUser(userId);
 
     throw error;
@@ -76,7 +74,7 @@ export const updateUserService = async (id, full_name, role, state) => {
   const updates = {};
   if (typeof full_name !== "undefined") updates.full_name = full_name;
   updates.active = state;
-
+  
   if (typeof role !== "undefined") {
     const { data: roleData, error: roleError } = await supabase
       .from("roles")

@@ -7,17 +7,10 @@ import superAdminRoutes from "./routes/superadmin.routes.js";
 
 const app = express();
 
-// 👇👇 ESTO SIEMPRE VA ANTES DE LAS RUTAS
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use(cors({
-  origin: [
-    "http://localhost:5500",
-    "http://127.0.0.1:5500",
-    "https://identity-frontend-flax.vercel.app"
-  ]
-}));
+app.use(cors());
 
 app.use('/api/auth', authRoutes);
 

@@ -2,11 +2,7 @@ import supabase from "../db/supabase.js";
 import { createUserService, resetPasswordUserService, updateUserService } from "../services/auth.service.js";
 
 export const getUsers = async (req, res) => {
-  console.log("estoy en el getUser");
-
   try {
-    console.log("ROL DEL QUE CONSULTA:", req.userRole);
-
     let query = supabase
       .from("users")
       .select(`
@@ -34,7 +30,6 @@ export const getUsers = async (req, res) => {
       role: user.roles.name,
       state: user.active
     }));
-    console.log(formattedUsers);
     res.json(formattedUsers);
 
   } catch (error) {
@@ -91,9 +86,8 @@ export const resetPasswordUser = async (req, res) => {
 export const updateUser = async (req, res) => {
   try {
     const id = req.params.id;
-    const { full_name, role, state } = req.body;
-
-    const result = await updateUserService(id, full_name, role, state);
+    const { name, role, state } = req.body;
+    const result = await updateUserService(id, name, role, state);
 
     if (result && result.error) {
       return res.status(400).json({ error: result.error });

@@ -76,7 +76,6 @@ export const resetPassword = async (token, id)=>{
 };
 
 export const updateUser = async (token, id, name, role, state) =>{
-
   const res = await fetch(`${API_URL}/api/admin/users/${id}`, {
     method:"PATCH",
     headers:{
@@ -107,7 +106,6 @@ export const getProfile = async (token) => {
 
     const data = await res.json();
 
-    // Si el backend respondió error HTTP
     if (!res.ok) {
       return {
         ok: false,
@@ -116,7 +114,6 @@ export const getProfile = async (token) => {
       };
     }
 
-    // respuesta correcta
     return {
       ok: true,
       ...data

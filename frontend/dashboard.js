@@ -35,26 +35,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     if (data.error === "account_disabled") {
 
-      // const notyf = new Notyf({
-      //   position: {
-      //     x: "center",
-      //     y: "top"
-      //   },
-      //   types: [
-      //     {
-      //       type: "success",
-      //       background: "#22c55e",
-      //       duration: 3000
-      //     },
-      //     {
-      //       type: "error",
-      //       background: "#ef4444",
-      //       duration: 5000
-      //     }
-      //   ]
-      // });
-
-
       localStorage.removeItem("token");
 
       setTimeout(() => {
@@ -82,7 +62,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       ? DOM.title.textContent = "ADMINISTRADOR"
       : DOM.title.textContent = "SUPER ADMINISTRADOR";
   }
-  // Siempre mostrar datos del perfil
+  
   document.getElementById("name").textContent = data.full_name;
   document.getElementById("email").textContent = data.email;
   const roleElement = document.getElementById("role");
@@ -142,7 +122,8 @@ function openEditForm(user) {
 
   btnResetPassword.onclick = async () => {
     const message = await resetPassword(token, user.id);
-    alert(`${message.message}\n Contraseña Temporal: ${message.temporaryPassword}`);
+    // alert(`${message.message}\n Contraseña Temporal: ${message.temporaryPassword}`);
+    notyf.error(`${message.message} Pass Temporal: ${message.temporaryPassword}`);
   };
 
   btnCancel.onclick = async (e) => {
@@ -151,7 +132,6 @@ function openEditForm(user) {
 
   // Mostrar rol solo si es superadmin
   if (currentRole === "super_admin") {
-    console.log("soy el rol mostra el list man");
     document.getElementById("roleField").style.display = "block";
     document.getElementById("editRole").value = user.role;
   } else {
@@ -165,6 +145,7 @@ function openEditForm(user) {
     user.full_name = textName.value;
     if (currentRole === "super_admin")
       user.role = document.getElementById("editRole").value;
+    
     await updateUser(token, user.id, user.full_name, user.role, user.state);
     await loadListUsers();
   };
@@ -198,7 +179,6 @@ DOM.btnNewUser.addEventListener("click", () => {
 
 DOM.formNewUser.addEventListener("submit", async (e) => {
   e.preventDefault();
-  console.log("estoy en el formnewuser");
   DOM.btnNewUser.disabled = true;
   DOM.btnNewUser.textContent = "Creando...";
 
