@@ -1,4 +1,4 @@
-const API_URL = "https://identity-backend-wheat.vercel.app"
+const API_URL = "https://identity-woad.vercel.app"
 // const API_URL = "http://localhost:3000";
 
 export const login = async (email, password) => {
