@@ -54,7 +54,10 @@ export const createUser = async (req, res) => {
       profile
     );
 
-    res.status(201).json(newUser);
+    res.status(201).json({
+  message: "Usuario creado correctamente",
+  user: newUser
+});
 
   } catch (error) {
     res.status(400).json({ error: error.message });

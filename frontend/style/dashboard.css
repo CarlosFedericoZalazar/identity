@@ -1,5 +1,5 @@
-#title-header{
-    margin-left: 40px;
+#title-header {
+  margin-left: 40px;
 }
 
 .container {
@@ -22,7 +22,32 @@
   border-radius: 12px;
   backdrop-filter: blur(10px);
   margin-bottom: 25px;
-  box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
+
+.admin-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.admin-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.admin-actions .btn {
+  font-size: 0.9rem;
+  padding: 8px 14px;
+}
+
+.btn-primary {
+  background: #10b981;
+}
+
+.btn-primary:hover {
+  background: #059669;
 }
 
 .btn {
@@ -48,78 +73,117 @@
   background: #dc2626;
 }
 
-.badge {
-  padding: 2px 5px;
-  border-radius: 6px;
-  background: #10b981;
-  font-size: 1.2rem;
+
+.profile-card h2 {
+  margin-bottom: 20px;
 }
 
-#profileSection p{
+.profile-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.profile-row:last-child {
+  border-bottom: none;
+}
+
+.profile-label {
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.profile-value {
+  font-weight: 500;
+}
+
+.badge-user {
+  background: #3b82f6;
+  padding: 5px;
+  font-size: x-large;
+  border-radius: 10px;
+}
+
+
+.badge-admin {
+  background: #10b981;
+  padding: 5px;
+  font-size: x-large;
+  border-radius: 10px;
+}
+
+.badge-super {
+  background: #f59e0b;
+  padding: 5px;
+  font-size: x-large;
+  border-radius: 10px;
+}
+
+#profileSection p {
   margin-bottom: 0.8rem;
 }
+
 .users-list {
   margin-top: 15px;
 }
 
 .user-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   padding: 10px;
-  background: rgba(255,255,255,0.05);
+  background: rgba(255, 255, 255, 0.05);
   margin-bottom: 8px;
   border-radius: 6px;
 }
 
-.user-item{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-}
-
-.userForm{
+.userForm {
   text-align: center;
-  background: rgba(255,255,255,0.05);
+  background: rgba(255, 255, 255, 0.05);
   border-radius: 6px;
   max-width: 300px;
   padding: 1rem;
 }
 
-#newUserForm div{
+#newUserForm div {
   margin-bottom: 1rem;
   display: flex;
   justify-content: space-between;
 }
 
-#editTitle{
+#editTitle {
   margin-bottom: 20px;
 }
 
-#editUserForm div{
-  margin-bottom: 1rem ;
+#editUserForm div {
+  margin-bottom: 1rem;
   display: flex;
 }
 
-.item-edit{
+.item-edit {
   margin-left: 0.5rem;
 }
 
-.div-editButton{
-    display:flex;
-    justify-content:center;
+.div-editButton {
+  display: flex;
+  justify-content: center;
 }
-#div-btnEdit button{
+
+#div-btnEdit button {
   padding: 6px;
 }
 
-.btnInListUpdate{
-    padding: 6px 10px;
-    font-size: 0.8rem;
-    margin: 0 1px;
+.btnInListUpdate {
+  padding: 6px 10px;
+  font-size: 0.8rem;
+  margin: 0 1px;
 }
 
-#btnInListDelete:hover{
+#btnInListDelete:hover {
   background: var(--userInactive);
 }
-
 
 @media (max-width: 768px) {
 
@@ -137,11 +201,47 @@
   }
 
   .card {
-    padding: 18px;
+    display: flex;
   }
 
   .users-list div {
     font-size: 0.9rem;
+    word-break: break-word;
+  }
+
+  .admin-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .admin-actions {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .profile-card {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .profile-card h2 {
+    text-align: center;
+    margin-bottom: 25px;
+  }
+
+  .profile-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  .profile-label {
+    font-size: 0.8rem;
+  }
+
+  .profile-value {
+    font-size: 0.95rem;
     word-break: break-word;
   }
 

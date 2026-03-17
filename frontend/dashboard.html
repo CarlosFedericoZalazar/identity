@@ -17,17 +17,35 @@
     </header>
 
     <div class="container">
-        <div class="card" id="profileSection">
+        <div class="card profile-card" id="profileSection">
             <h2>Perfil</h2>
-            <p><strong>Nombre:</strong> <span id="name"></span></p>
-            <p><strong>Email:</strong> <span id="email"></span></p>
-            <p><strong>Rol:</strong> <span id="role" class="badge"></span></p>
+            <div id="div-profile-data">
+                <div class="profile-row">
+                    <span class="profile-label">Nombre</span>
+                    <span id="name" class="profile-value"></span>
+                </div>
+                
+                <div class="profile-row">
+                    <span class="profile-label">Email</span>
+                    <span id="email" class="profile-value"></span>
+                </div>
+                
+                <div class="profile-row">
+                    <span class="profile-label">Rol</span>
+                    <span id="role" class="badge"></span>
+                </div>
+            </div>
         </div>
 
         <div class="card" id="adminSection" style="display:none;">
-            <h2>Panel Administrador</h2>
-            <button id="loadUsersBtn" class="btn">Listar usuarios</button>
-            <button id="newUsersBtn" class="btn">Crear Usuario</button>
+            <div class="admin-header">
+                <h2 id="title-adminSection">Panel Administrador</h2>
+
+                <div class="admin-actions">
+                    <button id="loadUsersBtn" class="btn">Listar usuarios</button>
+                    <button id="newUsersBtn" class="btn btn-primary">Crear Usuario</button>
+                </div>
+            </div>
             <div id="usersList" class="users-list"></div>
             <div id="newUserSection" class="userForm" style="display: none;">
                 <form id="newUserForm">

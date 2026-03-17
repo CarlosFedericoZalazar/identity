@@ -1,9 +1,5 @@
 import { createUser, getUsers, resetPassword, updateUser, getProfile, deleteUserbySuperAdmin } from "./js/api.js"
-import {alertNotyf} from "./components/alert.js";
-
-// const API_URL = "https://identity-backend-wheat.vercel.app"
-const API_URL = "http://localhost:3000";
-
+import { alertNotyf } from "./components/alert.js";
 
 const DOM = {
   title: document.getElementById("title-header"),
@@ -18,11 +14,13 @@ const DOM = {
 
 const token = localStorage.getItem("token");
 
+
 // VARIABLES
 let loggedUser = null;
 let nemeEdited = null;
 let roleEdited = null;
 let data = null;
+const notyf = alertNotyf();
 
 document.addEventListener("DOMContentLoaded", async () => {
 
@@ -32,8 +30,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   const data = await getProfile(token);
-  
-  const notyf = alertNotyf();
 
   if (!data.ok) {
 
@@ -58,13 +54,13 @@ document.addEventListener("DOMContentLoaded", async () => {
       //   ]
       // });
 
-      
+
       localStorage.removeItem("token");
-      
+
       setTimeout(() => {
         window.location.href = "index.html";
       }, 5000);
-      
+
       notyf.error(data.message);
       return;
     }
@@ -89,11 +85,16 @@ document.addEventListener("DOMContentLoaded", async () => {
   // Siempre mostrar datos del perfil
   document.getElementById("name").textContent = data.full_name;
   document.getElementById("email").textContent = data.email;
-  document.getElementById("role").textContent = data.role;
-  
+  const roleElement = document.getElementById("role");
+  roleElement.textContent = data.role;
+
+  if (data.role === "user") roleElement.classList.add("badge-user");
+  if (data.role === "admin") roleElement.classList.add("badge-admin");
+  if (data.role === "super_admin") roleElement.classList.add("badge-super");
+
   if (loggedUser.role === "super_admin") {
-  document.getElementById("newRoleField").style.display = "block";
-}
+    document.getElementById("newRoleField").style.display = "block";
+  }
 
 });
 
@@ -192,7 +193,7 @@ DOM.btnNewUser.addEventListener("click", () => {
 
   DOM.btnNewUser.textContent = "CANCELAR";
   DOM.btnNewUser.style.backgroundColor = "#f92525";
-  
+
 });
 
 DOM.formNewUser.addEventListener("submit", async (e) => {
@@ -211,13 +212,16 @@ DOM.formNewUser.addEventListener("submit", async (e) => {
   try {
     const result = await createUser(email, password, name, role);
 
-    console.log("Usuario creado:", result);
-
-    alert("Usuario creado correctamente");
+    notyf.success(result.message);
     resetUI();
+
   } catch (error) {
     console.error(error);
-    alert("Error al crear usuario");
+    notyf.error("Error al crear usuario");
+
+  } finally {
+    DOM.btnNewUser.disabled = false;
+    DOM.btnNewUser.textContent = "Crear Usuario";
   }
 });
 
@@ -242,12 +246,12 @@ async function loadListUsers() {
     btnUpdateUser.classList.add("btn", "btnInListUpdate");
     btnUpdateUser.textContent = "update";
 
-    if(currentRole === 'super_admin'){
+    if (currentRole === 'super_admin') {
       btnDeleteUser.id = "btnInListDelete";
       btnDeleteUser.classList.add("btn", "btnInListUpdate");
       btnDeleteUser.textContent = "delete";
-      
-      btnDeleteUser.addEventListener("click", async() => {
+
+      btnDeleteUser.addEventListener("click", async () => {
         const result = await deleteUserbySuperAdmin(token, user.id);
         console.log(result.estado);
         resetUI();
@@ -261,9 +265,9 @@ async function loadListUsers() {
     const state = user.state ? `🟢 ACTIVO` : `🔴 INACTIVO`;
     div.className = "user-item";
     div.textContent = `${user.full_name} — ${user.role} - ${state}`;
-    
+
     divButtons.appendChild(btnUpdateUser);
-    if(currentRole==='super_admin') divButtons.appendChild(btnDeleteUser);
+    if (currentRole === 'super_admin') divButtons.appendChild(btnDeleteUser);
     div.appendChild(divButtons);
     list.appendChild(div);
   });
