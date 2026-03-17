@@ -26,6 +26,4 @@ app.use("/api/admin", adminRoutes);
 
 app.use("/api/super-admin", superAdminRoutes);
 
-app.listen("3000",()=>{
-    console.log("Escuchando en puerto 3000");
-})
+export default app;
